@@ -1,44 +1,51 @@
 const express = require("express");
 const router = express.Router();
 const Complaint = require("../models/Complaint");
+const multer = require("multer");
+const path = require("path");
 
-// POST complaint
-router.post("/", async (req, res) => {
+/* Multer config */
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) =>
+    cb(null, Date.now() + path.extname(file.originalname))
+});
+const upload = multer({ storage });
+
+/* POST complaint (with image) */
+router.post("/", upload.single("image"), async (req, res) => {
   const { title, description, location } = req.body;
 
   if (!title || !description || !location) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const complaint = new Complaint({ title, description, location });
-  await complaint.save();
+  const complaint = new Complaint({
+    title,
+    description,
+    location,
+    image: req.file ? req.file.filename : null
+  });
 
-  res.json({ message: "Complaint submitted successfully" });
+  await complaint.save();
+  res.json({ message: "Complaint submitted successfully", complaint });
 });
 
-// GET complaints
+/* GET all complaints */
 router.get("/", async (req, res) => {
-  const complaints = await Complaint.find();
+  const complaints = await Complaint.find().sort({ createdAt: -1 });
   res.json(complaints);
 });
 
-module.exports = router;
-// UPDATE complaint status (Council)
+/* UPDATE status (Council) */
 router.put("/:id", async (req, res) => {
-  try {
-    const { status } = req.body;
+  const updated = await Complaint.findByIdAndUpdate(
+    req.params.id,
+    { status: req.body.status },
+    { new: true }
+  );
 
-    const updated = await Complaint.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    );
-
-    res.json({
-      message: "Status updated successfully",
-      complaint: updated
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Error updating status" });
-  }
+  res.json({ message: "Status updated", complaint: updated });
 });
+
+module.exports = router;

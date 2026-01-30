@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Register Complaint</title>
-</head>
 <body>
 
 <h2>Register Complaint</h2>
@@ -10,31 +7,26 @@
 <input id="title" placeholder="Title"><br><br>
 <textarea id="description" placeholder="Description"></textarea><br><br>
 <input id="location" placeholder="Location"><br><br>
+<input type="file" id="image"><br><br>
 
 <button onclick="submitComplaint()">Submit</button>
-
 <p id="msg"></p>
 
 <script>
 function submitComplaint() {
+  const fd = new FormData();
+  fd.append("title", title.value);
+  fd.append("description", description.value);
+  fd.append("location", location.value);
+  if (image.files[0]) fd.append("image", image.files[0]);
+
   fetch("http://localhost:51078/complaints", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      title: document.getElementById("title").value,
-      description: document.getElementById("description").value,
-      location: document.getElementById("location").value
-    })
+    body: fd
   })
   .then(res => res.json())
-  .then(data => {
-    document.getElementById("msg").innerText = "Complaint submitted ✅";
-  })
-  .catch(() => {
-    document.getElementById("msg").innerText = "Error ❌";
-  });
+  .then(() => msg.innerText = "Complaint submitted ✅")
+  .catch(() => msg.innerText = "Error ❌");
 }
 </script>
 

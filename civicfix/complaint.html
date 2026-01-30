@@ -4,46 +4,125 @@
   <meta charset="UTF-8">
   <title>Raise Complaint | CivicFix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      font-size: 13px;
+      color: #444;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+  </style>
 </head>
 
 <body class="landing citizen-mobile">
 
+<!-- HEADER -->
 <header class="mobile-header">
   <span onclick="history.back()">←</span>
-  <h2>New Complaint</h2>
-  <span></span>
+  <h2>Raise Complaint</h2>
+  <span>📝</span>
 </header>
 
+<!-- FORM -->
 <section class="auth-container">
   <div class="auth-card glass">
 
-    <select>
-      <option>Select Issue Type</option>
-      <option>Pothole</option>
-      <option>Street Light</option>
-      <option>Garbage</option>
-      <option>Water Supply</option>
-    </select>
-
-    <!-- LOCATION AUTO-FILL (UI ONLY) -->
-    <div class="location-box">
-      <input type="text" placeholder="Location (Auto-filled)" value="Ward 5, Pune">
-      <span class="loc-btn">📍</span>
+    <div class="form-group">
+      <label>Issue Type</label>
+      <select id="issue">
+        <option>Pothole</option>
+        <option>Garbage</option>
+        <option>Street Light</option>
+        <option>Water Leakage</option>
+      </select>
     </div>
 
-    <!-- PHOTO UPLOAD -->
-    <label class="upload-box">
-      📷 Upload Photo
-      <input type="file" hidden>
-    </label>
+    <div class="form-group">
+      <label>Location</label>
+      <input type="text" id="location" value="Ward 5, Pune" readonly>
+    </div>
 
-    <textarea placeholder="Describe the issue"></textarea>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="desc" placeholder="Describe the issue briefly"></textarea>
+    </div>
 
-    <a href="citizen.html" class="btn-primary full">Submit Complaint</a>
+    <div class="form-group">
+      <label>Upload Photo / Video</label>
+      <input type="file" id="media" accept="image/*,video/*">
+    </div>
+
+    <button class="btn-primary full" onclick="submitComplaint()">
+      Submit Complaint
+    </button>
+
   </div>
 </section>
 
+<!-- SUCCESS POPUP -->
+<div id="successPopup" class="modal">
+  <div class="modal-content glass">
+    <h2>✅ Complaint Registered</h2>
+    <p>Your complaint has been successfully registered.</p>
+
+    <a href="complaint-chat.html" class="btn-primary full">
+      Track Complaint
+    </a>
+  </div>
+</div>
+
+<script>
+function submitComplaint() {
+  const issue = document.getElementById("issue").value;
+  const desc = document.getElementById("desc").value;
+  const location = document.getElementById("location").value;
+  const file = document.getElementById("media").files[0];
+
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    const complaint = {
+      id: "#CF101",
+      issue: issue,
+      description: desc,
+      location: location,
+      media: file ? reader.result : null,
+      mediaType: file ? file.type : null,
+      date: new Date().toDateString(),
+      status: "Pending"
+    };
+
+    localStorage.setItem("complaintData", JSON.stringify(complaint));
+    document.getElementById("successPopup").style.display = "flex";
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    reader.onload();
+  }
+}
+</script>
+
 </body>
 </html>
-

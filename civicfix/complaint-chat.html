@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complaint Tracking | CivicFix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    body { background: #f2f4f7; }
+
+    .chat-wrapper {
+      height: 78vh;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .date-label {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      margin: 8px 0;
+    }
+
+    .bubble {
+      max-width: 80%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      position: relative;
+      backdrop-filter: blur(12px);
+    }
+
+    .user {
+      align-self: flex-end;
+      background: rgba(19,136,8,0.9);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .system {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .avatar {
+      font-size: 22px;
+      margin-top: 4px;
+    }
+
+    .time {
+      font-size: 10px;
+      color: rgba(0,0,0,0.5);
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .boost-btn {
+      align-self: center;
+      background: #fff3cd;
+      border: 1px dashed #ffc107;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Celebration */
+    .celebrate {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      z-index: 2000;
+    }
+
+    /* Rating Popup */
+    .stars {
+      font-size: 24px;
+      margin: 12px 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body class="citizen-mobile">
+
+<header class="mobile-header">
+  <span onclick="history.back()">←</span>
+  <h2>Complaint Status</h2>
+  <span>💬</span>
+</header>
+
+<div class="chat-wrapper" id="chat">
+
+  <!-- DATE -->
+  <div class="date-label">28 Jan 2026</div>
+
+  <!-- USER MESSAGE -->
+  <div class="bubble user">
+    I reported a pothole near Ward 5.
+    <div class="time">10:32 AM</div>
+  </div>
+
+  <!-- SYSTEM -->
+  <div class="system">
+    <div class="avatar">🤖</div>
+    <div class="bubble glass">
+      Complaint ID <strong>#101</strong> registered successfully.
+      <div class="time">10:33 AM</div>
+    </div>
+  </div>
+
+  <!-- COUNCIL -->
+  <div class="system">
+    <div class="avatar">👮‍♂️</div>
+    <div class="bubble glass">
+      Status updated to <strong>Pending</strong>. Under review.
+      <div class="time">11:10 AM</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 🎉 Celebration -->
+<div id="celebrate" class="celebrate">
+  🎉 Complaint Resolved Successfully!
+</div>
+
+<!-- ⭐ Rating -->
+<div id="ratingPopup" class="modal">
+  <div class="modal-content glass">
+    <h3>Rate the Resolution</h3>
+    <p>How satisfied are you?</p>
+    <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+    <button class="btn-primary full" onclick="closeRating()">Submit</button>
+  </div>
+</div>
+
+<script>
+/* ======================
+   CHAT HELPERS
+====================== */
+function addSystemMsg(text, avatar, time) {
+  const msg = document.createElement("div");
+  msg.className = "system";
+  msg.innerHTML = `
+    <div class="avatar">${avatar}</div>
+    <div class="bubble glass">
+      ${text}
+      <div class="time">${time}</div>
+    </div>
+  `;
+  document.getElementById("chat").appendChild(msg);
+}
+
+/* ======================
+   SIMULATED FLOW
+====================== */
+setTimeout(() => {
+  addSystemMsg("Assigned to Road Department.", "👮‍♂️", "12:00 PM");
+}, 3000);
+
+setTimeout(() => {
+  addSystemMsg("Issue not resolved within 7 days.", "🤖", "Day 7");
+  showBoost();
+}, 6000);
+
+function showBoost() {
+  const boost = document.createElement("div");
+  boost.className = "boost-btn";
+  boost.innerText = "🚀 Boost Complaint";
+  boost.onclick = () => {
+    addSystemMsg("Complaint boosted. Priority increased.", "🤖", "Day 7");
+    boost.remove();
+    resolveComplaint();
+  };
+  document.getElementById("chat").appendChild(boost);
+}
+
+function resolveComplaint() {
+  setTimeout(() => {
+    addSystemMsg("Issue resolved successfully.", "👮‍♂️", "Day 8");
+    showCelebration();
+  }, 3000);
+}
+
+/* ======================
+   CELEBRATION + RATING
+====================== */
+function showCelebration() {
+  document.getElementById("celebrate").style.display = "flex";
+  setTimeout(() => {
+    document.getElementById("celebrate").style.display = "none";
+    document.getElementById("ratingPopup").style.display = "flex";
+  }, 2000);
+}
+
+function closeRating() {
+  document.getElementById("ratingPopup").style.display = "none";
+}
+</script>
+
+</body>
+</html>

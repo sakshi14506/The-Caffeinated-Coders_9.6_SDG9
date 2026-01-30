@@ -925,3 +925,265 @@ textarea {
   padding: 20px;
   text-align: center;
 }
+
+/* COMMON */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f2f4f7;
+}
+
+.glass {
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+}
+
+/* HEADER */
+.mobile-header {
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #138808;
+  color: #fff;
+}
+
+/* ANALYSIS */
+.citizen-analysis {
+  padding: 15px;
+}
+
+.analysis-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.analysis-card {
+  padding: 12px;
+  text-align: center;
+}
+
+.analysis-card .big {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+/* TREND */
+.trend {
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+.bars {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  height: 80px;
+  margin: 10px 0;
+}
+
+.bars span {
+  width: 16%;
+  background: linear-gradient(180deg, #138808, #4caf50);
+  border-radius: 6px;
+}
+
+/* SUMMARY */
+.summary {
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* COMPLAINTS */
+.complaints {
+  padding: 15px;
+}
+
+.complaint-card {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.complaint-card a {
+  display: inline-block;
+  margin-top: 6px;
+  color: #138808;
+  font-weight: 600;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.status.pending {
+  background: #fff3cd;
+}
+
+.status.resolved {
+  background: #d4edda;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: #138808;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #138808;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid #138808;
+}
+
+.full {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* QUICK ACTIONS */
+.quick-actions {
+  padding: 15px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 🇮🇳 INDIAN THEME BACKGROUND */
+.india-theme {
+  background: linear-gradient(
+    180deg,
+    #fffaf3 0%,
+    #f6fff4 50%,
+    #f2f4f7 100%
+  );
+}
+
+/* HEADER */
+.mobile-header {
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #ff9933, #138808);
+  color: #fff;
+}
+
+/* DASHBOARD */
+.dashboard {
+  padding: 15px;
+}
+
+.dashboard h3 {
+  margin-bottom: 10px;
+  color: #1f2937;
+}
+
+/* TABLE (COUNCIL STYLE) */
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.row.header {
+  font-weight: 600;
+  background: rgba(0,0,0,0.05);
+}
+
+.row span {
+  display: flex;
+  align-items: center;
+}
+
+/* 4 COLUMN ROWS */
+.table .row span:nth-child(4) {
+  justify-content: flex-start;
+}
+
+/* STATUS */
+.status {
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  width: fit-content;
+}
+
+.status.pending {
+  background: #fff3cd;
+}
+
+.status.resolved {
+  background: #d4edda;
+}
+
+/* GLASS EFFECT */
+.glass {
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+}
+
+/* LINKS */
+a {
+  color: #138808;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: #138808;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #138808;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid #138808;
+}
+
+.full {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.quick-actions {
+  padding: 15px;
+}

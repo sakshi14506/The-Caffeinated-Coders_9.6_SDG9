@@ -4,67 +4,114 @@
   <meta charset="UTF-8">
   <title>Citizen Dashboard | CivicFix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="landing citizen-mobile">
+<body class="citizen-mobile india-theme">
 
-  <!-- TOP BAR -->
-  <header class="mobile-header">
-    <span class="menu">☰</span>
-    <h2>CivicFix</h2>
-    <span class="profile">👤</span>
-  </header>
+<!-- HEADER -->
+<header class="mobile-header">
+  <h2>CivicFix</h2>
+  <span>🔔</span>
+</header>
 
-  <!-- QUICK ACTION -->
-  <section class="quick-action">
-    <h3>Hello Citizen 👋</h3>
-    <p>Report issues & track resolutions</p>
+<!-- ANALYSIS : COUNCIL STYLE -->
+<section class="dashboard">
+  <h3>Complaint Overview</h3>
 
-    <a href="complaint.html" class="btn-primary full">
-      + Raise New Complaint
-    </a>
-    <a href="citizen-heatmap.html" class="btn-secondary full">
-  View Heatmap
-</a>
+  <div class="table glass">
+    <div class="row header">
+      <span>Metric</span>
+      <span>Details</span>
+    </div>
 
-  </section>
+    <div class="row">
+      <span>Total Complaints Raised</span>
+      <span>5</span>
+    </div>
 
-  <!-- MY COMPLAINTS -->
-  <section class="complaints-section">
-    <h3>My Complaints</h3>
+    <div class="row">
+      <span>Pending Complaints</span>
+      <span>2</span>
+    </div>
 
-    <div class="complaint-card glass">
-      <h4>Pothole</h4>
-      <p>Ward 5 • 28 Jan</p>
+    <div class="row">
+      <span>In Progress</span>
+      <span>1</span>
+    </div>
+
+    <div class="row">
+      <span>Resolved Complaints</span>
+      <span>2</span>
+    </div>
+
+    <div class="row">
+      <span>Average Resolution Time</span>
+      <span>4.2 days</span>
+    </div>
+  </div>
+</section>
+
+<!-- AREA SNAPSHOT -->
+<section class="dashboard">
+  <h3>Your Area Snapshot</h3>
+
+  <div class="table glass">
+    <div class="row header">
+      <span>Metric</span>
+      <span>Status</span>
+    </div>
+
+    <div class="row">
+      <span>Active Complaints (Ward)</span>
+      <span>124</span>
+    </div>
+
+    <div class="row">
+      <span>Most Reported Issue</span>
+      <span>Potholes</span>
+    </div>
+
+    <div class="row">
+      <span>Typical Resolution Time</span>
+      <span>3–5 days</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLAINT LIST -->
+<section class="dashboard">
+  <h3>Your Complaints</h3>
+
+  <div class="table glass">
+    <div class="row header">
+      <span>ID</span>
+      <span>Issue</span>
+      <span>Status</span>
+      <span>Action</span>
+    </div>
+
+    <div class="row">
+      <span>#101</span>
+      <span>Pothole</span>
       <span class="status pending">Pending</span>
+      <span><a href="complaint-chat.html">Track</a></span>
     </div>
 
-    <div class="complaint-card glass">
-      <h4>Street Light</h4>
-      <p>Ward 2 • 26 Jan</p>
-      <span class="status progress">In Progress</span>
-    </div>
-
-    <div class="complaint-card glass">
-      <h4>Garbage Issue</h4>
-      <p>Ward 7 • 20 Jan</p>
+    <div class="row">
+      <span>#102</span>
+      <span>Street Light</span>
       <span class="status resolved">Resolved</span>
+      <span><a href="complaint-chat.html">View</a></span>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
-    <a class="active">🏠<span>Home</span></a>
-    <a href="complaint.html">➕<span>Report</span></a>
-    <a>📊<span>Status</span></a>
-    <a>⚙️<span>Profile</span></a>
-  </nav>
+<!-- QUICK ACTIONS -->
+<section class="quick-actions">
+  <a href="complaint.html" class="btn-primary full">➕ New Complaint</a>
+  <a href="citizen-heatmap.html" class="btn-secondary full">🔥 Issues Near Me</a>
+</section>
 
 </body>
 </html>

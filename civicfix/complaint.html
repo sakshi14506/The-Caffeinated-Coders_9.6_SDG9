@@ -14,27 +14,57 @@
     .form-group {
       margin-bottom: 14px;
     }
+
     .form-group label {
       font-size: 13px;
       color: #444;
+      margin-bottom: 4px;
+      display: block;
     }
+
     .form-group input,
-    .form-group select,
-    .form-group textarea {
+    .form-group textarea,
+    .custom-select {
       width: 100%;
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid #ccc;
       font-size: 14px;
+      background: #fff;
+      font-family: 'Poppins', sans-serif;
     }
+
     textarea {
       resize: none;
       height: 80px;
     }
+
+    /* 🎨 Creative Dropdown */
+    .custom-select {
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #138808 50%),
+        linear-gradient(135deg, #138808 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) calc(50% - 4px),
+        calc(100% - 12px) calc(50% - 4px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+
+    .custom-select option {
+      padding: 10px;
+    }
+
+    /* Date input icon spacing */
+    input[type="date"] {
+      padding-right: 12px;
+    }
   </style>
 </head>
 
-<body class="landing citizen-mobile">
+<body class="landing citizen-mobile india-theme">
 
 <!-- HEADER -->
 <header class="mobile-header">
@@ -47,31 +77,42 @@
 <section class="auth-container">
   <div class="auth-card glass">
 
+    <!-- ISSUE TYPE -->
     <div class="form-group">
       <label>Issue Type</label>
-      <select id="issue">
-        <option>Pothole</option>
-        <option>Garbage</option>
-        <option>Street Light</option>
-        <option>Water Leakage</option>
+      <select id="issue" class="custom-select">
+        <option value="Pothole">🕳️ Pothole</option>
+        <option value="Garbage">🗑️ Garbage</option>
+        <option value="Street Light">💡 Street Light</option>
+        <option value="Water Leakage">🚰 Water Leakage</option>
       </select>
     </div>
 
+    <!-- DATE -->
+    <div class="form-group">
+      <label>Date of Issue</label>
+      <input type="date" id="issueDate">
+    </div>
+
+    <!-- LOCATION -->
     <div class="form-group">
       <label>Location</label>
       <input type="text" id="location" value="Ward 5, Pune" readonly>
     </div>
 
+    <!-- DESCRIPTION -->
     <div class="form-group">
       <label>Description</label>
       <textarea id="desc" placeholder="Describe the issue briefly"></textarea>
     </div>
 
+    <!-- MEDIA -->
     <div class="form-group">
       <label>Upload Photo / Video</label>
       <input type="file" id="media" accept="image/*,video/*">
     </div>
 
+    <!-- SUBMIT -->
     <button class="btn-primary full" onclick="submitComplaint()">
       Submit Complaint
     </button>
@@ -96,6 +137,7 @@ function submitComplaint() {
   const issue = document.getElementById("issue").value;
   const desc = document.getElementById("desc").value;
   const location = document.getElementById("location").value;
+  const date = document.getElementById("issueDate").value;
   const file = document.getElementById("media").files[0];
 
   const reader = new FileReader();
@@ -106,9 +148,10 @@ function submitComplaint() {
       issue: issue,
       description: desc,
       location: location,
+      issueDate: date || new Date().toISOString().split("T")[0],
       media: file ? reader.result : null,
       mediaType: file ? file.type : null,
-      date: new Date().toDateString(),
+      submittedOn: new Date().toDateString(),
       status: "Pending"
     };
 

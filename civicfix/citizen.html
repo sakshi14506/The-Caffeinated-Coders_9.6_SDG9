@@ -2,33 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Citizen | CivicFix</title>
+  <title>Citizen Dashboard | CivicFix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="citizen-ui">
 
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="landing citizen-mobile">
+
+  <!-- TOP BAR -->
   <header class="mobile-header">
-    <div>
-      <h2>CivicFix</h2>
-      <small>Citizen Portal</small>
-    </div>
+    <span class="menu">☰</span>
+    <h2>CivicFix</h2>
+    <span class="profile">👤</span>
   </header>
 
-  <main class="mobile-container">
-    <h1>Report an Issue</h1>
+  <!-- QUICK ACTION -->
+  <section class="quick-action">
+    <h3>Hello Citizen 👋</h3>
+    <p>Report issues & track resolutions</p>
 
-    <form class="mobile-form glass">
-      <input type="text" placeholder="Type of Issue (e.g. Pothole)">
-      <input type="text" placeholder="Location / Area Name">
-      <input type="file">
-      <button type="button">Submit Report</button>
-    </form>
+    <a href="complaint.html" class="btn-primary full">
+      + Raise New Complaint
+    </a>
+  </section>
 
-    <p class="note">
-      Your report helps improve public infrastructure in your city.
-    </p>
-  </main>
+  <!-- MY COMPLAINTS -->
+  <section class="complaints-section">
+    <h3>My Complaints</h3>
+
+    <div class="complaint-card glass">
+      <h4>Pothole</h4>
+      <p>Ward 5 • 28 Jan</p>
+      <span class="status pending">Pending</span>
+    </div>
+
+    <div class="complaint-card glass">
+      <h4>Street Light</h4>
+      <p>Ward 2 • 26 Jan</p>
+      <span class="status progress">In Progress</span>
+    </div>
+
+    <div class="complaint-card glass">
+      <h4>Garbage Issue</h4>
+      <p>Ward 7 • 20 Jan</p>
+      <span class="status resolved">Resolved</span>
+    </div>
+  </section>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a class="active">🏠<span>Home</span></a>
+    <a href="complaint.html">➕<span>Report</span></a>
+    <a>📊<span>Status</span></a>
+    <a>⚙️<span>Profile</span></a>
+  </nav>
 
 </body>
 </html>

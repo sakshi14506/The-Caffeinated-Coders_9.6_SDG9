@@ -818,3 +818,79 @@ textarea {
   width: 70%;
   background: #fd7e14;
 }
+
+/* =========================
+   SLA TIMER BADGES
+========================= */
+
+.sla {
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.sla.warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.sla.overdue {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+
+/* =========================
+   HEATMAP UI
+========================= */
+
+.heatmap-container {
+  padding: 40px;
+  text-align: center;
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+.heat {
+  padding: 30px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.heat.high { background: #dc3545; }
+.heat.medium { background: #fd7e14; }
+.heat.low { background: #198754; }
+
+
+/* =========================
+   ROLES UI
+========================= */
+
+.roles-container {
+  padding: 40px;
+  display: grid;
+  gap: 25px;
+  max-width: 900px;
+  margin: auto;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.role-card h3 {
+  margin-bottom: 10px;
+  color: #0a3d62;
+}
+
+.role-card ul {
+  list-style: none;
+  font-size: 14px;
+}
+

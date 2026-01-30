@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complaint Details</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="landing council-ui">
+
+<section class="drill-container">
+  <div class="drill-card glass">
+    <h2>Pothole Issue</h2>
+    <span class="sla overdue">⏱ <span id="slaTimer">71:59:59</span></span>
+
+    <p>Description of issue.</p>
+
+    <div class="image-gallery">
+      <img src="https://via.placeholder.com/120">
+      <img src="https://via.placeholder.com/120">
+    </div>
+  </div>
+</section>
+
+<script>
+let s=72*3600;
+setInterval(()=>{s--;let h=String(Math.floor(s/3600)).padStart(2,0);
+let m=String(Math.floor(s%3600/60)).padStart(2,0);
+let sec=String(s%60).padStart(2,0);
+slaTimer.innerText=`${h}:${m}:${sec}`},1000);
+</script>
+
+</body>
+</html>

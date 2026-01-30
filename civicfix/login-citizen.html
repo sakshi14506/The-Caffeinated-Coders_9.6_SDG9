@@ -17,9 +17,19 @@
     <input type="tel" placeholder="Mobile Number">
     <input type="text" placeholder="Enter OTP">
 
-    <a href="citizen-profile.html" class="btn-primary">Verify</a>
+    <!-- ✅ VERIFY BUTTON -->
+    <button class="btn-primary" onclick="verifyCitizen()">Verify</button>
   </div>
 </section>
+
+<script>
+  function verifyCitizen() {
+    // 🔒 Fake OTP verification (hackathon-safe)
+    // Later real OTP can be added
+
+    window.location.href = "citizen.html";
+  }
+</script>
 
 </body>
 </html>

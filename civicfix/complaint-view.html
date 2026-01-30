@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Complaint Details</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <title>Complaints</title>
 </head>
+<body>
 
-<body class="landing council-ui">
-
-<section class="drill-container">
-  <div class="drill-card glass">
-    <h2>Pothole Issue</h2>
-    <span class="sla overdue">⏱ <span id="slaTimer">71:59:59</span></span>
-
-    <p>Description of issue.</p>
-
-    <div class="image-gallery">
-      <img src="https://via.placeholder.com/120">
-      <img src="https://via.placeholder.com/120">
-    </div>
-  </div>
-</section>
+<h2>All Complaints</h2>
+<div id="complaints"></div>
 
 <script>
-let s=72*3600;
-setInterval(()=>{s--;let h=String(Math.floor(s/3600)).padStart(2,0);
-let m=String(Math.floor(s%3600/60)).padStart(2,0);
-let sec=String(s%60).padStart(2,0);
-slaTimer.innerText=`${h}:${m}:${sec}`},1000);
+fetch("http://localhost:51078/complaints")
+  .then(res => res.json())
+  .then(data => {
+    const div = document.getElementById("complaints");
+    data.forEach(c => {
+      div.innerHTML += `
+        <p>
+          <b>${c.title}</b><br>
+          ${c.description}<br>
+          ${c.location}<br>
+          Status: ${c.status}
+        </p><hr>`;
+    });
+  });
 </script>
 
 </body>

@@ -1187,3 +1187,19 @@ a {
 .quick-actions {
   padding: 15px;
 }
+.btn-secondary {
+  display: inline-block;
+  padding: 12px 22px;
+  background-color: #226c43; /* green */
+  color: #ffffff;           /* white text */
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #226c43; /* darker green on hover */
+  color: #ffffff;
+  transform: translateY(-2px);
+}

@@ -643,3 +643,90 @@ textarea {
   color: #138808;
   font-weight: 600;
 }
+
+/* =========================
+   COUNCIL DASHBOARD
+========================= */
+
+.council-ui {
+  background-attachment: fixed;
+}
+
+/* STATS CARDS */
+.council-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 30px 40px;
+}
+
+.stat-card {
+  padding: 25px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  font-size: 32px;
+  color: #0a3d62;
+}
+
+.stat-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* TABLE ACTION BUTTON */
+.update-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #0a3d62;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.update-btn:hover {
+  background: #138808;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 420px;
+  max-width: 90%;
+  padding: 25px;
+}
+
+.modal-content h2 {
+  color: #0a3d62;
+  margin-bottom: 15px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* DESKTOP PRIORITY */
+@media (max-width: 768px) {
+  .council-ui::before {
+    content: "💻 This dashboard is best viewed on desktop";
+    display: block;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    background: #fff3cd;
+    color: #856404;
+  }
+}

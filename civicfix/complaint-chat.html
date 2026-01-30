@@ -7,8 +7,12 @@
   <link rel="stylesheet" href="../css/style.css">
 
   <style>
-    body { background: #f2f4f7; }
+    body {
+      background: #f2f4f7;
+      margin-bottom: 70px;
+    }
 
+    /* CHAT AREA */
     .chat-wrapper {
       height: 78vh;
       overflow-y: auto;
@@ -64,6 +68,14 @@
       margin-top: 4px;
     }
 
+    /* IMAGE MESSAGE */
+    .img-bubble img {
+      width: 180px;
+      border-radius: 12px;
+      display: block;
+    }
+
+    /* BOOST */
     .boost-btn {
       align-self: center;
       background: #fff3cd;
@@ -75,7 +87,32 @@
       margin-top: 10px;
     }
 
-    /* Celebration */
+    /* CHAT INPUT */
+    .chat-input {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      gap: 10px;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .attach {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* CELEBRATION */
     .celebrate {
       position: fixed;
       inset: 0;
@@ -88,7 +125,7 @@
       z-index: 2000;
     }
 
-    /* Rating Popup */
+    /* RATING */
     .stars {
       font-size: 24px;
       margin: 12px 0;
@@ -107,16 +144,13 @@
 
 <div class="chat-wrapper" id="chat">
 
-  <!-- DATE -->
   <div class="date-label">28 Jan 2026</div>
 
-  <!-- USER MESSAGE -->
   <div class="bubble user">
     I reported a pothole near Ward 5.
     <div class="time">10:32 AM</div>
   </div>
 
-  <!-- SYSTEM -->
   <div class="system">
     <div class="avatar">🤖</div>
     <div class="bubble glass">
@@ -125,7 +159,6 @@
     </div>
   </div>
 
-  <!-- COUNCIL -->
   <div class="system">
     <div class="avatar">👮‍♂️</div>
     <div class="bubble glass">
@@ -141,7 +174,7 @@
   🎉 Complaint Resolved Successfully!
 </div>
 
-<!-- ⭐ Rating -->
+<!-- ⭐ Rating Popup -->
 <div id="ratingPopup" class="modal">
   <div class="modal-content glass">
     <h3>Rate the Resolution</h3>
@@ -151,32 +184,63 @@
   </div>
 </div>
 
+<!-- CHAT INPUT -->
+<div class="chat-input">
+  <label class="attach">
+    📎
+    <input type="file" accept="image/*" hidden onchange="sendPhoto(event)">
+  </label>
+  <input type="text" placeholder="Type a message..." disabled>
+</div>
+
 <script>
-/* ======================
-   CHAT HELPERS
-====================== */
-function addSystemMsg(text, avatar, time) {
+/* ========= HELPERS ========= */
+function currentTime() {
+  return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
+
+function addSystemMsg(text, avatar) {
   const msg = document.createElement("div");
   msg.className = "system";
   msg.innerHTML = `
     <div class="avatar">${avatar}</div>
     <div class="bubble glass">
       ${text}
-      <div class="time">${time}</div>
+      <div class="time">${currentTime()}</div>
     </div>
   `;
   document.getElementById("chat").appendChild(msg);
 }
 
-/* ======================
-   SIMULATED FLOW
-====================== */
+/* ========= PHOTO UPLOAD ========= */
+function sendPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const msg = document.createElement("div");
+    msg.className = "bubble user img-bubble";
+    msg.innerHTML = `
+      <img src="${e.target.result}">
+      <div class="time">${currentTime()}</div>
+    `;
+    document.getElementById("chat").appendChild(msg);
+
+    setTimeout(() => {
+      addSystemMsg("Photo received and attached to your complaint.", "👮‍♂️");
+    }, 1500);
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ========= SIMULATION FLOW ========= */
 setTimeout(() => {
-  addSystemMsg("Assigned to Road Department.", "👮‍♂️", "12:00 PM");
+  addSystemMsg("Assigned to Road Department.", "👮‍♂️");
 }, 3000);
 
 setTimeout(() => {
-  addSystemMsg("Issue not resolved within 7 days.", "🤖", "Day 7");
+  addSystemMsg("Issue not resolved within 7 days.", "🤖");
   showBoost();
 }, 6000);
 
@@ -185,7 +249,7 @@ function showBoost() {
   boost.className = "boost-btn";
   boost.innerText = "🚀 Boost Complaint";
   boost.onclick = () => {
-    addSystemMsg("Complaint boosted. Priority increased.", "🤖", "Day 7");
+    addSystemMsg("Complaint boosted. Priority increased.", "🤖");
     boost.remove();
     resolveComplaint();
   };
@@ -194,14 +258,12 @@ function showBoost() {
 
 function resolveComplaint() {
   setTimeout(() => {
-    addSystemMsg("Issue resolved successfully.", "👮‍♂️", "Day 8");
+    addSystemMsg("Issue resolved successfully.", "👮‍♂️");
     showCelebration();
   }, 3000);
 }
 
-/* ======================
-   CELEBRATION + RATING
-====================== */
+/* ========= CELEBRATION + RATING ========= */
 function showCelebration() {
   document.getElementById("celebrate").style.display = "flex";
   setTimeout(() => {

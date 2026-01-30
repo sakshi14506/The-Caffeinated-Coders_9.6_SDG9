@@ -5,13 +5,11 @@
   <title>Live Heatmap | CivicFix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Leaflet Heat Plugin -->
+  <!-- Heatmap plugin -->
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 
   <link rel="stylesheet" href="../css/style.css">
@@ -20,9 +18,16 @@
     #map {
       height: 80vh;
       width: 100%;
-      border-radius: 16px;
-      margin: 20px auto;
       max-width: 1200px;
+      margin: 20px auto;
+      border-radius: 16px;
+    }
+    .heat-controls {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: flex-end;
     }
   </style>
 </head>
@@ -31,49 +36,94 @@
 
 <nav class="navbar">
   <div class="logo">Civic<span>Fix</span></div>
-  <div class="tagline">Live Issue Heatmap</div>
+  <div class="tagline">Complaint Heatmap</div>
 </nav>
+
+<!-- 🔽 WARD FILTER -->
+<div class="heat-controls glass">
+  <select id="wardFilter">
+    <option value="all">All Wards</option>
+    <option value="1">Ward 1</option>
+    <option value="2">Ward 2</option>
+    <option value="3">Ward 3</option>
+    <option value="4">Ward 4</option>
+    <option value="5">Ward 5</option>
+  </select>
+</div>
 
 <div id="map"></div>
 
-<!-- Leaflet JS -->
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
-
 <script>
-  // Initialize map (example: Pune)
+  /* ===============================
+     1️⃣ COMPLAINT DATA (FAKE BACKEND)
+     =============================== */
+
+  const complaints = [
+    { id: 101, ward: 1, lat: 18.5204, lng: 73.8567 },
+    { id: 102, ward: 1, lat: 18.5220, lng: 73.8580 },
+    { id: 103, ward: 2, lat: 18.5300, lng: 73.8700 },
+    { id: 104, ward: 2, lat: 18.5280, lng: 73.8680 },
+    { id: 105, ward: 3, lat: 18.5100, lng: 73.8400 },
+    { id: 106, ward: 4, lat: 18.5450, lng: 73.8650 },
+    { id: 107, ward: 4, lat: 18.5470, lng: 73.8670 },
+    { id: 108, ward: 5, lat: 18.5000, lng: 73.8300 }
+  ];
+
+  /* ===============================
+     2️⃣ MAP INIT
+     =============================== */
+
   const map = L.map('map').setView([18.5204, 73.8567], 12);
 
-  // OpenStreetMap tiles (FREE)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
   }).addTo(map);
 
-  // 🔥 Dummy complaint locations (lat, lng, intensity)
-  const complaintPoints = [
-    [18.5204, 73.8567, 0.8], // Ward 1
-    [18.5300, 73.8700, 0.9],
-    [18.5100, 73.8400, 0.6],
-    [18.5450, 73.8650, 1.0], // High density
-    [18.4950, 73.8600, 0.7],
-    [18.5000, 73.8300, 0.5],
-    [18.5400, 73.8200, 0.9]
-  ];
+  let heatLayer;
 
-  // Heatmap layer
-  L.heatLayer(complaintPoints, {
-    radius: 30,
-    blur: 20,
-    maxZoom: 17,
-    gradient: {
-      0.2: 'blue',
-      0.4: 'lime',
-      0.6: 'yellow',
-      0.8: 'orange',
-      1.0: 'red'
+  /* ===============================
+     3️⃣ HEATMAP RENDER FUNCTION
+     =============================== */
+
+  function renderHeatmap(ward = "all") {
+    if (heatLayer) {
+      map.removeLayer(heatLayer);
     }
-  }).addTo(map);
+
+    const filtered = ward === "all"
+      ? complaints
+      : complaints.filter(c => c.ward == ward);
+
+    const heatPoints = filtered.map(c => [
+      c.lat,
+      c.lng,
+      1.0 // intensity
+    ]);
+
+    heatLayer = L.heatLayer(heatPoints, {
+      radius: 30,
+      blur: 20,
+      maxZoom: 17,
+      gradient: {
+        0.2: 'blue',
+        0.4: 'lime',
+        0.6: 'yellow',
+        0.8: 'orange',
+        1.0: 'red'
+      }
+    }).addTo(map);
+  }
+
+  // Initial load
+  renderHeatmap();
+
+  /* ===============================
+     4️⃣ WARD FILTER LISTENER
+     =============================== */
+
+  document.getElementById("wardFilter").addEventListener("change", function () {
+    renderHeatmap(this.value);
+  });
 </script>
 
 </body>

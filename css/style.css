@@ -730,3 +730,91 @@ textarea {
     color: #856404;
   }
 }
+
+/* =========================
+   COUNCIL CONTROLS
+========================= */
+
+.council-controls {
+  margin: 0 40px 30px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.council-controls select {
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* DEPARTMENT SELECT */
+.dept-select {
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+/* ANALYTICS */
+.analytics {
+  padding: 30px 40px 60px;
+}
+
+.analytics h1 {
+  margin-bottom: 20px;
+  color: #0a3d62;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.chart-card {
+  padding: 20px;
+}
+
+.chart-card h4 {
+  margin-bottom: 15px;
+  color: #0a3d62;
+}
+
+/* BARS */
+.bar {
+  padding: 8px;
+  margin-bottom: 10px;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.pending-bar {
+  width: 40%;
+  background: #ffc107;
+}
+
+.progress-bar {
+  width: 65%;
+  background: #0d6efd;
+}
+
+.resolved-bar {
+  width: 25%;
+  background: #198754;
+}
+
+.road-bar {
+  width: 55%;
+  background: #6f42c1;
+}
+
+.water-bar {
+  width: 35%;
+  background: #20c997;
+}
+
+.sanitation-bar {
+  width: 70%;
+  background: #fd7e14;
+}

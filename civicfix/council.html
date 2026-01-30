@@ -15,30 +15,41 @@
   <div class="tagline">Municipal Council Panel</div>
 </nav>
 
-<!-- DASHBOARD STATS -->
+<!-- STATS -->
 <section class="council-stats">
   <div class="stat-card glass">
     <h3>128</h3>
     <p>Total Complaints</p>
   </div>
-
   <div class="stat-card glass">
     <h3>46</h3>
     <p>Pending</p>
   </div>
-
   <div class="stat-card glass">
     <h3>62</h3>
     <p>In Progress</p>
   </div>
-
   <div class="stat-card glass">
     <h3>20</h3>
     <p>Resolved</p>
   </div>
 </section>
 
-<!-- COMPLAINT TABLE -->
+<!-- CONTROLS -->
+<section class="council-controls glass">
+  <select>
+    <option>Filter by Ward</option>
+    <option>Ward 1</option>
+    <option>Ward 2</option>
+    <option>Ward 3</option>
+    <option>Ward 4</option>
+    <option>Ward 5</option>
+  </select>
+
+  <button class="btn-secondary">⬇ Export CSV</button>
+</section>
+
+<!-- TABLE -->
 <section class="dashboard">
   <h1>Complaints Overview</h1>
 
@@ -47,6 +58,7 @@
       <span>ID</span>
       <span>Issue</span>
       <span>Ward</span>
+      <span>Department</span>
       <span>Status</span>
       <span>Action</span>
     </div>
@@ -55,6 +67,13 @@
       <span>#101</span>
       <span>Pothole</span>
       <span>Ward 5</span>
+      <span>
+        <select class="dept-select">
+          <option>Road</option>
+          <option>Water</option>
+          <option>Sanitation</option>
+        </select>
+      </span>
       <span class="status pending">Pending</span>
       <span><button class="update-btn" onclick="openModal()">Update</button></span>
     </div>
@@ -63,6 +82,13 @@
       <span>#102</span>
       <span>Street Light</span>
       <span>Ward 2</span>
+      <span>
+        <select class="dept-select">
+          <option>Electrical</option>
+          <option>Road</option>
+          <option>Sanitation</option>
+        </select>
+      </span>
       <span class="status progress">In Progress</span>
       <span><button class="update-btn" onclick="openModal()">Update</button></span>
     </div>
@@ -71,16 +97,44 @@
       <span>#103</span>
       <span>Garbage</span>
       <span>Ward 7</span>
+      <span>
+        <select class="dept-select">
+          <option>Sanitation</option>
+          <option>Road</option>
+          <option>Water</option>
+        </select>
+      </span>
       <span class="status resolved">Resolved</span>
       <span><button class="update-btn" onclick="openModal()">Update</button></span>
     </div>
   </div>
 </section>
 
-<!-- STATUS UPDATE MODAL -->
+<!-- ANALYTICS -->
+<section class="analytics">
+  <h1>Analytics Overview</h1>
+
+  <div class="charts">
+    <div class="chart-card glass">
+      <h4>Status Distribution</h4>
+      <div class="bar pending-bar">Pending</div>
+      <div class="bar progress-bar">In Progress</div>
+      <div class="bar resolved-bar">Resolved</div>
+    </div>
+
+    <div class="chart-card glass">
+      <h4>Department Load</h4>
+      <div class="bar road-bar">Road</div>
+      <div class="bar water-bar">Water</div>
+      <div class="bar sanitation-bar">Sanitation</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATUS MODAL -->
 <div id="statusModal" class="modal">
   <div class="modal-content glass">
-    <h2>Update Complaint Status</h2>
+    <h2>Update Status</h2>
 
     <select>
       <option>Pending</option>

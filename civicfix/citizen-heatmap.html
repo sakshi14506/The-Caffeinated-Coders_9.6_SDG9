@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nearby Issues | CivicFix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Heatmap Plugin -->
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    #map {
+      height: 80vh;
+      width: 100%;
+      margin: 10px auto;
+      border-radius: 16px;
+    }
+    .location-status {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body class="landing citizen-mobile">
+
+<header class="mobile-header">
+  <span onclick="history.back()">←</span>
+  <h2>Issues Near Me</h2>
+  <span>📍</span>
+</header>
+
+<div class="location-status" id="status">
+  Detecting your location…
+</div>
+
+<div id="map"></div>
+
+<script>
+  /* ==========================
+     1️⃣ FAKE COMPLAINT DATA
+     ========================== */
+
+  const complaints = [
+    { lat: 18.5204, lng: 73.8567 },
+    { lat: 18.5215, lng: 73.8575 },
+    { lat: 18.5228, lng: 73.8580 },
+    { lat: 18.5250, lng: 73.8600 },
+    { lat: 18.5190, lng: 73.8540 }
+  ];
+
+  /* ==========================
+     2️⃣ INIT MAP (DEFAULT)
+     ========================== */
+
+  const map = L.map('map').setView([18.5204, 73.8567], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  let heatLayer;
+
+  /* ==========================
+     3️⃣ GEOLOCATION
+     ========================== */
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+
+        document.getElementById("status").innerText =
+          "Showing issues near your location";
+
+        map.setView([userLat, userLng], 14);
+
+        // Mark user location
+        L.marker([userLat, userLng])
+          .addTo(map)
+          .bindPopup("📍 You are here")
+          .openPopup();
+
+        // Merge user area complaints (demo logic)
+        const heatPoints = complaints.map(c => [
+          c.lat,
+          c.lng,
+          1.0
+        ]);
+
+        heatLayer = L.heatLayer(heatPoints, {
+          radius: 30,
+          blur: 20,
+          maxZoom: 17,
+          gradient: {
+            0.2: 'blue',
+            0.4: 'lime',
+            0.6: 'yellow',
+            0.8: 'orange',
+            1.0: 'red'
+          }
+        }).addTo(map);
+      },
+      error => {
+        document.getElementById("status").innerText =
+          "Location permission denied. Showing city overview.";
+      }
+    );
+  } else {
+    document.getElementById("status").innerText =
+      "Geolocation not supported.";
+  }
+</script>
+
+</body>
+</html>

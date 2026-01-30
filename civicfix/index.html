@@ -2,33 +2,189 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CivicFix | Smart Indian Cities</title>
+  <title>Issues Near Me | CivicFix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Heatmap Plugin -->
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
   <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    #map {
+      height: 72vh;
+      border-radius: 16px;
+      margin: 10px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      justify-content: space-between;
+    }
+    .controls select, .controls button {
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .complaint-panel {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #fff;
+      border-radius: 16px 16px 0 0;
+      padding: 15px;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 999;
+    }
+    .complaint-panel h4 {
+      margin-bottom: 10px;
+    }
+    .complaint-item {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+  </style>
 </head>
 
-<body class="landing">
+<body class="landing citizen-mobile">
 
-<nav class="navbar">
-  <div class="logo">Civic<span>Fix</span></div>
-  <div class="tagline">Smart Civic Infrastructure</div>
-</nav>
+<header class="mobile-header">
+  <span onclick="history.back()">←</span>
+  <h2>Citizen Heatmap</h2>
+  <span>🔥</span>
+</header>
 
-<section class="hero">
-  <div class="hero-content glass">
-    <h1>Building <span>Smarter Indian Cities</span><br>Together 🇮🇳</h1>
-    <p>
-      CivicFix enables citizens to report civic issues and helps
-      municipal councils resolve them efficiently using technology.
-    </p>
-    <a href="login.html" class="btn-primary">Get Started</a>
-  </div>
-</section>
+<!-- 🔘 CONTROLS -->
+<div class="controls glass">
+  <select id="areaToggle">
+    <option value="near">My Area</option>
+    <option value="city">Full City</option>
+  </select>
 
-<footer class="footer">
-  © 2026 CivicFix • Digital India Initiative 🇮🇳
-</footer>
+  <select id="timeFilter">
+    <option value="24">Last 24h</option>
+    <option value="all">Last 1 Week</option>
+    <option value="all">Last 1 Month</option>
+    <option value="all">Last 6 Months</option>
+    <option value="all">Last 1 Year</option>
+    <option value="all">View All</option>
+  </select>
+
+  <button id="privacyBtn">Privacy ON</button>
+</div>
+
+<div id="map"></div>
+
+<!-- 📷 Complaint List Panel -->
+<div class="complaint-panel" id="panel">
+  <h4>Complaints in this area</h4>
+  <div id="panelContent"></div>
+</div>
+
+<script>
+/* ===============================
+   FAKE COMPLAINT DATA
+================================ */
+const complaints = [
+  { id:101, lat:18.5204, lng:73.8567, issue:"Pothole", hours:5 },
+  { id:102, lat:18.5210, lng:73.8575, issue:"Garbage", hours:10 },
+  { id:103, lat:18.5300, lng:73.8700, issue:"Street Light", hours:30 },
+  { id:104, lat:18.5250, lng:73.8600, issue:"Water Leak", hours:2 },
+  { id:105, lat:18.5000, lng:73.8300, issue:"Garbage", hours:50 }
+];
+
+let userLocation = [18.5204, 73.8567];
+let privacyEnabled = false;
+
+/* ===============================
+   MAP INIT
+================================ */
+const map = L.map('map').setView(userLocation, 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+let heatLayer;
+
+/* ===============================
+   GEOLOCATION
+================================ */
+navigator.geolocation.getCurrentPosition(pos => {
+  if (!privacyEnabled) {
+    userLocation = [pos.coords.latitude, pos.coords.longitude];
+    map.setView(userLocation, 14);
+    L.marker(userLocation).addTo(map).bindPopup("📍 You");
+    renderHeatmap();
+  }
+});
+
+/* ===============================
+   HEATMAP RENDER
+================================ */
+function renderHeatmap() {
+  if (heatLayer) map.removeLayer(heatLayer);
+
+  const areaMode = areaToggle.value;
+  const timeMode = timeFilter.value;
+
+  let data = complaints;
+
+  if (timeMode === "24") {
+    data = data.filter(c => c.hours <= 24);
+  }
+
+  if (areaMode === "near") {
+    data = data.filter(c =>
+      Math.abs(c.lat - userLocation[0]) < 0.02 &&
+      Math.abs(c.lng - userLocation[1]) < 0.02
+    );
+  }
+
+  const points = data.map(c => [c.lat, c.lng, 1.0]);
+
+  heatLayer = L.heatLayer(points, {
+    radius: 30,
+    blur: 20
+  }).addTo(map);
+}
+
+/* ===============================
+   CONTROLS LISTENERS
+================================ */
+areaToggle.onchange = renderHeatmap;
+timeFilter.onchange = renderHeatmap;
+
+privacyBtn.onclick = () => {
+  privacyEnabled = !privacyEnabled;
+  privacyBtn.innerText = privacyEnabled ? "Privacy OFF" : "Privacy ON";
+};
+
+/* ===============================
+   CLICK → COMPLAINT LIST
+================================ */
+map.on('click', e => {
+  const nearby = complaints.filter(c =>
+    Math.abs(c.lat - e.latlng.lat) < 0.01 &&
+    Math.abs(c.lng - e.latlng.lng) < 0.01
+  );
+
+  if (nearby.length > 0) {
+    panel.style.display = "block";
+    panelContent.innerHTML = nearby.map(c =>
+      `<div class="complaint-item">📌 ${c.issue} (ID ${c.id})</div>`
+    ).join("");
+  }
+});
+
+renderHeatmap();
+</script>
 
 </body>
 </html>

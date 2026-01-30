@@ -1,29 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Complaints</title>
+  <meta charset="UTF-8">
+  <title>Complaint View</title>
 </head>
 <body>
 
-<h2>All Complaints</h2>
-<div id="complaints"></div>
+  <h2>All Complaints</h2>
 
-<script>
-fetch("http://localhost:51078/complaints")
-  .then(res => res.json())
-  .then(data => {
-    const div = document.getElementById("complaints");
-    data.forEach(c => {
-      div.innerHTML += `
-        <p>
-          <b>${c.title}</b><br>
-          ${c.description}<br>
-          ${c.location}<br>
-          Status: ${c.status}
-        </p><hr>`;
-    });
-  });
-</script>
+  <!-- ✅ THIS DIV WAS MISSING -->
+  <div id="complaints">Loading...</div>
+
+  <script>
+    fetch("http://localhost:51078/complaints")
+      .then(res => res.json())
+      .then(data => {
+        const div = document.getElementById("complaints");
+        div.innerHTML = "";
+
+        data.forEach(c => {
+          div.innerHTML += `
+            <p>
+              <b>${c.title}</b><br>
+              ${c.description}<br>
+              ${c.location}<br>
+              Status: ${c.status}
+            </p>
+            <hr>
+          `;
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("complaints").innerText =
+          "Error loading complaints";
+      });
+  </script>
 
 </body>
 </html>

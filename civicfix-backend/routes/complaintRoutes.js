@@ -23,3 +23,22 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+// UPDATE complaint status (Council)
+router.put("/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const updated = await Complaint.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    res.json({
+      message: "Status updated successfully",
+      complaint: updated
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating status" });
+  }
+});

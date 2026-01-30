@@ -1,80 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Council Dashboard | CivicFix</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/style.css">
+  <title>Council Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 600px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 6px 12px;
+      background: green;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
-<body class="landing">
+<body>
 
-<nav class="navbar">
-  <div class="logo">Civic<span>Fix</span></div>
-  <div class="tagline">Council Dashboard</div>
-</nav>
+<h2>🧑‍⚖️ Council Dashboard</h2>
 
-<section class="dashboard">
-  <h1>Complaints Overview</h1>
-
-  <div class="table glass">
-    <div class="row header">
-      <span>ID</span>
-      <span>Issue</span>
-      <span>Location</span>
-      <span>Status</span>
-      <span>Action</span>
-    </div>
-
-    <div class="row">
-      <span>#101</span>
-      <span>Pothole</span>
-      <span>Ward 5</span>
-      <span class="status pending">Pending</span>
-      <span>
-        <button class="update-btn" onclick="openModal()">Update</button>
-      </span>
-    </div>
-
-    <div class="row">
-      <span>#102</span>
-      <span>Street Light</span>
-      <span>Ward 2</span>
-      <span class="status progress">In Progress</span>
-      <span>
-        <button class="update-btn" onclick="openModal()">Update</button>
-      </span>
-    </div>
-  </div>
-</section>
-
-<!-- STATUS UPDATE MODAL -->
-<div id="statusModal" class="modal">
-  <div class="modal-content glass">
-    <h2>Update Complaint Status</h2>
-
-    <select>
-      <option>Pending</option>
-      <option>In Progress</option>
-      <option>Resolved</option>
-    </select>
-
-    <textarea placeholder="Remarks (optional)"></textarea>
-
-    <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="closeModal()">Update</button>
-    </div>
-  </div>
-</div>
+<div id="complaints">Loading...</div>
 
 <script>
-  function openModal() {
-    document.getElementById("statusModal").style.display = "flex";
-  }
-  function closeModal() {
-    document.getElementById("statusModal").style.display = "none";
-  }
+const API = "http://localhost:51078/complaints";
+
+function loadComplaints() {
+  fetch(API)
+    .then(res => res.json())
+    .then(data => {
+      const div = document.getElementById("complaints");
+      div.innerHTML = "";
+
+      data.forEach(c => {
+        div.innerHTML += `
+          <div class="card">
+            <h3>${c.title}</h3>
+            <p>${c.description}</p>
+            <p><b>Location:</b> ${c.location}</p>
+            <p><b>Status:</b> ${c.status}</p>
+            ${
+              c.status !== "Resolved"
+              ? `<button onclick="resolveComplaint('${c._id}')">
+                   Mark as Resolved
+                 </button>`
+              : ""
+            }
+          </div>
+        `;
+      });
+    });
+}
+
+function resolveComplaint(id) {
+  fetch(`${API}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ status: "Resolved" })
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert("Status updated ✅");
+    loadComplaints();
+  });
+}
+
+loadComplaints();
 </script>
 
 </body>

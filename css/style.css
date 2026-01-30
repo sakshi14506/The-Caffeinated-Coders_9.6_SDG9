@@ -449,3 +449,197 @@ textarea {
     color: #856404;
   }
 }
+
+/* =========================
+   COMPLAINT DETAILS + EXTRA
+========================= */
+
+/* SUMMARY */
+.complaint-summary {
+  margin: 20px;
+  padding: 16px;
+  position: relative;
+}
+
+.complaint-summary h3 {
+  margin-bottom: 4px;
+}
+
+.complaint-summary p {
+  font-size: 13px;
+  color: #666;
+}
+
+.complaint-summary .status {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+/* TIMELINE */
+.timeline-section {
+  padding: 0 20px 30px;
+}
+
+.timeline-section h3 {
+  margin-bottom: 15px;
+  color: #0a3d62;
+}
+
+.timeline {
+  border-left: 3px solid #ccc;
+  padding-left: 15px;
+}
+
+.timeline-step {
+  position: relative;
+  margin-bottom: 25px;
+  opacity: 0.6;
+}
+
+.timeline-step.active {
+  opacity: 1;
+}
+
+.timeline-step .dot {
+  width: 14px;
+  height: 14px;
+  background: #ccc;
+  border-radius: 50%;
+  position: absolute;
+  left: -23px;
+  top: 4px;
+}
+
+.timeline-step.active .dot {
+  background: #138808;
+}
+
+.timeline-step .content h4 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.timeline-step .content p {
+  font-size: 12px;
+  color: #666;
+}
+
+/* LOCATION */
+.location-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.location-box input {
+  flex: 1;
+}
+
+.loc-btn {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* UPLOAD */
+.upload-box {
+  display: block;
+  padding: 14px;
+  border: 2px dashed #aaa;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.6);
+}
+
+/* =========================
+   MODAL (COUNCIL)
+========================= */
+
+.update-btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  background: #0a3d62;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 400px;
+  padding: 25px;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  color: #0a3d62;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* =========================
+   NOTIFICATION BELL
+========================= */
+
+.notification {
+  position: relative;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 50%;
+}
+
+.notification-box {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 28px;
+  width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 12px;
+  font-size: 13px;
+  z-index: 999;
+}
+
+.notification:hover .notification-box {
+  display: block;
+}
+
+.notification-box p {
+  margin-bottom: 8px;
+}
+
+.green {
+  color: #138808;
+  font-weight: 600;
+}

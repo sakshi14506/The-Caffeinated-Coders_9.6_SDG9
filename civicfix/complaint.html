@@ -7,16 +7,16 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="landing">
+<body class="landing citizen-mobile">
 
-<nav class="navbar">
-  <div class="logo">Civic<span>Fix</span></div>
-</nav>
+<header class="mobile-header">
+  <span onclick="history.back()">←</span>
+  <h2>New Complaint</h2>
+  <span></span>
+</header>
 
 <section class="auth-container">
   <div class="auth-card glass">
-    <h1>Raise a Complaint</h1>
-    <p>Help us improve your locality</p>
 
     <select>
       <option>Select Issue Type</option>
@@ -26,12 +26,24 @@
       <option>Water Supply</option>
     </select>
 
-    <input type="text" placeholder="City / Ward">
+    <!-- LOCATION AUTO-FILL (UI ONLY) -->
+    <div class="location-box">
+      <input type="text" placeholder="Location (Auto-filled)" value="Ward 5, Pune">
+      <span class="loc-btn">📍</span>
+    </div>
+
+    <!-- PHOTO UPLOAD -->
+    <label class="upload-box">
+      📷 Upload Photo
+      <input type="file" hidden>
+    </label>
+
     <textarea placeholder="Describe the issue"></textarea>
 
-    <a href="citizen.html" class="btn-primary">Submit Complaint</a>
+    <a href="citizen.html" class="btn-primary full">Submit Complaint</a>
   </div>
 </section>
 
 </body>
 </html>
+

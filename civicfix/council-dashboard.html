@@ -23,6 +23,7 @@
       <span>Issue</span>
       <span>Location</span>
       <span>Status</span>
+      <span>Action</span>
     </div>
 
     <div class="row">
@@ -30,6 +31,9 @@
       <span>Pothole</span>
       <span>Ward 5</span>
       <span class="status pending">Pending</span>
+      <span>
+        <button class="update-btn" onclick="openModal()">Update</button>
+      </span>
     </div>
 
     <div class="row">
@@ -37,16 +41,41 @@
       <span>Street Light</span>
       <span>Ward 2</span>
       <span class="status progress">In Progress</span>
-    </div>
-
-    <div class="row">
-      <span>#103</span>
-      <span>Garbage</span>
-      <span>Ward 7</span>
-      <span class="status resolved">Resolved</span>
+      <span>
+        <button class="update-btn" onclick="openModal()">Update</button>
+      </span>
     </div>
   </div>
 </section>
+
+<!-- STATUS UPDATE MODAL -->
+<div id="statusModal" class="modal">
+  <div class="modal-content glass">
+    <h2>Update Complaint Status</h2>
+
+    <select>
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Resolved</option>
+    </select>
+
+    <textarea placeholder="Remarks (optional)"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="closeModal()">Update</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById("statusModal").style.display = "flex";
+  }
+  function closeModal() {
+    document.getElementById("statusModal").style.display = "none";
+  }
+</script>
 
 </body>
 </html>

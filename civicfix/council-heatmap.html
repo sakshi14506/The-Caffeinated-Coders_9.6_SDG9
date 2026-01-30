@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Issues Near Me | CivicFix</title>
+  <title>Council Heatmap | CivicFix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Leaflet -->
@@ -16,54 +16,55 @@
 
   <style>
     #map {
-      height: 72vh;
+      height: 75vh;
       border-radius: 16px;
-      margin: 10px;
+      margin: 15px;
     }
     .controls {
       display: flex;
-      gap: 10px;
-      padding: 10px;
+      gap: 12px;
+      padding: 15px 20px;
       justify-content: space-between;
     }
-    .controls select, .controls button {
-      padding: 8px;
+    .controls select,
+    .controls button {
+      padding: 10px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 14px;
     }
-    .complaint-panel {
+    .panel {
       position: fixed;
-      bottom: 0;
-      width: 100%;
+      right: 20px;
+      top: 120px;
+      width: 300px;
       background: #fff;
-      border-radius: 16px 16px 0 0;
+      border-radius: 14px;
       padding: 15px;
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       display: none;
       z-index: 999;
     }
-    .complaint-panel h4 {
+    .panel h4 {
       margin-bottom: 10px;
     }
-    .complaint-item {
+    .panel-item {
       font-size: 14px;
       margin-bottom: 6px;
     }
   </style>
 </head>
 
-<body class="landing citizen-mobile">
+<body class="landing council-ui">
 
-<header class="mobile-header">
-  <span onclick="history.back()">←</span>
-  <h2>Citizen Heatmap</h2>
-  <span>🔥</span>
-</header>
+<nav class="navbar">
+  <div class="logo">Civic<span>Fix</span></div>
+  <div class="tagline">Council Heatmap View</div>
+</nav>
 
 <!-- 🔘 CONTROLS -->
 <div class="controls glass">
   <select id="areaToggle">
-    <option value="near">My Area</option>
+    <option value="ward">Selected Ward</option>
     <option value="city">Full City</option>
   </select>
 
@@ -72,13 +73,22 @@
     <option value="all">All Time</option>
   </select>
 
+  <select id="wardSelect">
+    <option value="all">All Wards</option>
+    <option value="1">Ward 1</option>
+    <option value="2">Ward 2</option>
+    <option value="3">Ward 3</option>
+    <option value="4">Ward 4</option>
+    <option value="5">Ward 5</option>
+  </select>
+
   <button id="privacyBtn">🔐 Privacy ON</button>
 </div>
 
 <div id="map"></div>
 
-<!-- 📷 Complaint List Panel -->
-<div class="complaint-panel" id="panel">
+<!-- 📋 Complaint List Panel -->
+<div class="panel" id="panel">
   <h4>Complaints in this area</h4>
   <div id="panelContent"></div>
 </div>
@@ -88,20 +98,21 @@
    FAKE COMPLAINT DATA
 ================================ */
 const complaints = [
-  { id:101, lat:18.5204, lng:73.8567, issue:"Pothole", hours:5 },
-  { id:102, lat:18.5210, lng:73.8575, issue:"Garbage", hours:10 },
-  { id:103, lat:18.5300, lng:73.8700, issue:"Street Light", hours:30 },
-  { id:104, lat:18.5250, lng:73.8600, issue:"Water Leak", hours:2 },
-  { id:105, lat:18.5000, lng:73.8300, issue:"Garbage", hours:50 }
+  { id:101, ward:1, lat:18.5204, lng:73.8567, issue:"Pothole", hours:5 },
+  { id:102, ward:1, lat:18.5212, lng:73.8572, issue:"Garbage", hours:20 },
+  { id:103, ward:2, lat:18.5300, lng:73.8700, issue:"Street Light", hours:40 },
+  { id:104, ward:3, lat:18.5250, lng:73.8600, issue:"Water Leak", hours:3 },
+  { id:105, ward:4, lat:18.5450, lng:73.8650, issue:"Garbage", hours:60 },
+  { id:106, ward:5, lat:18.5000, lng:73.8300, issue:"Pothole", hours:12 }
 ];
 
-let userLocation = [18.5204, 73.8567];
 let privacyEnabled = false;
+let selectedWard = "all";
 
 /* ===============================
-   MAP INIT
+   MAP INIT (CITY VIEW)
 ================================ */
-const map = L.map('map').setView(userLocation, 13);
+const map = L.map('map').setView([18.5204, 73.8567], 12);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
@@ -110,52 +121,35 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let heatLayer;
 
 /* ===============================
-   GEOLOCATION
-================================ */
-navigator.geolocation.getCurrentPosition(pos => {
-  if (!privacyEnabled) {
-    userLocation = [pos.coords.latitude, pos.coords.longitude];
-    map.setView(userLocation, 14);
-    L.marker(userLocation).addTo(map).bindPopup("📍 You");
-    renderHeatmap();
-  }
-});
-
-/* ===============================
    HEATMAP RENDER
 ================================ */
 function renderHeatmap() {
   if (heatLayer) map.removeLayer(heatLayer);
 
-  const areaMode = areaToggle.value;
-  const timeMode = timeFilter.value;
-
   let data = complaints;
 
-  if (timeMode === "24") {
+  if (timeFilter.value === "24") {
     data = data.filter(c => c.hours <= 24);
   }
 
-  if (areaMode === "near") {
-    data = data.filter(c =>
-      Math.abs(c.lat - userLocation[0]) < 0.02 &&
-      Math.abs(c.lng - userLocation[1]) < 0.02
-    );
+  if (areaToggle.value === "ward" && wardSelect.value !== "all") {
+    data = data.filter(c => c.ward == wardSelect.value);
   }
 
   const points = data.map(c => [c.lat, c.lng, 1.0]);
 
   heatLayer = L.heatLayer(points, {
-    radius: 30,
-    blur: 20
+    radius: 35,
+    blur: 22
   }).addTo(map);
 }
 
 /* ===============================
-   CONTROLS LISTENERS
+   CONTROLS
 ================================ */
 areaToggle.onchange = renderHeatmap;
 timeFilter.onchange = renderHeatmap;
+wardSelect.onchange = renderHeatmap;
 
 privacyBtn.onclick = () => {
   privacyEnabled = !privacyEnabled;
@@ -167,14 +161,16 @@ privacyBtn.onclick = () => {
 ================================ */
 map.on('click', e => {
   const nearby = complaints.filter(c =>
-    Math.abs(c.lat - e.latlng.lat) < 0.01 &&
-    Math.abs(c.lng - e.latlng.lng) < 0.01
+    Math.abs(c.lat - e.latlng.lat) < 0.015 &&
+    Math.abs(c.lng - e.latlng.lng) < 0.015
   );
 
   if (nearby.length > 0) {
     panel.style.display = "block";
     panelContent.innerHTML = nearby.map(c =>
-      `<div class="complaint-item">📌 ${c.issue} (ID ${c.id})</div>`
+      `<div class="panel-item">
+        #${c.id} • Ward ${c.ward} • ${c.issue}
+      </div>`
     ).join("");
   }
 });

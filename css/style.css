@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --gov-blue: #0b3c5d;
+  --saffron: #f59e0b;
+  --light-bg: #f8fafc;
+  --glass: rgba(255,255,255,0.75);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(180deg, #eaf2f8, #ffffff);
+  color: #1f2937;
+}
+
+/* COMMON */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+a {
+  color: var(--gov-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* NAVBAR */
+.navbar {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  background: var(--gov-blue);
+  color: white;
+}
+
+.tagline {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* HERO */
+.hero {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 50px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+}
+
+.hero span {
+  color: var(--saffron);
+}
+
+.hero p {
+  margin-top: 20px;
+  font-size: 1.05rem;
+  opacity: 0.9;
+}
+
+.btn-primary {
+  display: inline-block;
+  margin-top: 35px;
+  padding: 14px 40px;
+  border-radius: 30px;
+  background: var(--gov-blue);
+  color: white;
+}
+
+/* ROLE */
+.role-container {
+  max-width: 1000px;
+  margin: 80px auto;
+  padding: 20px;
+}
+
+.role-container h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.role-card {
+  padding: 35px;
+}
+
+/* CITIZEN */
+.citizen-ui {
+  background: #f8fafc;
+}
+
+.mobile-header {
+  padding: 20px;
+  background: var(--gov-blue);
+  color: white;
+}
+
+.mobile-container {
+  padding: 25px;
+}
+
+.mobile-form {
+  padding: 25px;
+}
+
+.mobile-form input,
+.mobile-form button {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+}
+
+.mobile-form button {
+  background: var(--saffron);
+  border: none;
+  font-weight: 600;
+}
+
+/* COUNCIL */
+.council-ui {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background: var(--gov-blue);
+  color: white;
+  padding: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  margin-top: 30px;
+}
+
+.sidebar li {
+  margin: 15px 0;
+  opacity: 0.9;
+}
+
+.council-main {
+  flex: 1;
+  padding: 40px;
+}
+
+table {
+  width: 100%;
+  margin-top: 25px;
+  border-collapse: collapse;
+}
+
+th {
+  background: #eaf2f8;
+}
+
+th, td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .council-ui { flex-direction: column; }
+  .sidebar { width: 100%; }
+}
